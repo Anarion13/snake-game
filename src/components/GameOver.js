@@ -10,7 +10,7 @@ const GameOver = ({ score, onRestart }) => {
     color: '#9EB764',
     padding: '20px',
     textAlign: 'center',
-    zIndex: 10,
+    zIndex: 1000,
     border: '2px solid #9EB764',
     fontFamily: 'Courier New, monospace'
   };

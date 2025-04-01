@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState, useEffect, useCallback, useRef } from 'react';
 import Board from './Board';
 import Score from './Score';
 import GameOver from './GameOver';
@@ -8,7 +8,11 @@ import { generateRandomPosition, checkCollision, checkSelfCollision } from '../u
 const INITIAL_SNAKE = [[4, 10], [3, 10], [2, 10]];
 const INITIAL_DIRECTION = 'RIGHT';
 const GRID_SIZE = 20;
-const GAME_SPEED = 150;
+const INITIAL_GAME_SPEED = 150;
+const MIN_GAME_SPEED = 30;  // Increased maximum speed (highest difficulty)
+const SPEED_INCREMENT = 5;  // How much to increase speed by
+const SCORE_THRESHOLD = 50; // Score needed to trigger speed increase
+const POINTS_PER_APPLE = 10; // Points earned for eating an apple
 
 const Game = () => {
   const [snake, setSnake] = useState(INITIAL_SNAKE);
@@ -17,9 +21,21 @@ const Game = () => {
   const [gameOver, setGameOver] = useState(false);
   const [score, setScore] = useState(0);
   const [isPaused, setIsPaused] = useState(false);
+  const [gameSpeed, setGameSpeed] = useState(INITIAL_GAME_SPEED);
+  
+  // Add direction buffer ref
+  const directionBuffer = useRef(null);
+  // Add last score ref to track when to increase speed
+  const lastScoreRef = useRef(0);
 
   const moveSnake = useCallback(() => {
     if (gameOver || isPaused) return;
+
+    // Process buffered direction if it exists
+    if (directionBuffer.current) {
+      setDirection(directionBuffer.current);
+      directionBuffer.current = null;
+    }
 
     setSnake(prevSnake => {
       const newHead = getNewHead(prevSnake[0], direction);
@@ -42,7 +58,19 @@ const Game = () => {
       const newSnake = [newHead, ...prevSnake];
       if (newHead[0] === food[0] && newHead[1] === food[1]) {
         console.log("Food eaten at position:", food);
-        setScore(prev => prev + 10);
+        const newScore = score + POINTS_PER_APPLE;
+        setScore(newScore);
+        
+        // Check if we should increase speed
+        if (newScore >= lastScoreRef.current + SCORE_THRESHOLD) {
+          setGameSpeed(prevSpeed => {
+            const newSpeed = Math.max(MIN_GAME_SPEED, prevSpeed - SPEED_INCREMENT);
+            console.log(`Speed increased to ${newSpeed}ms`);
+            return newSpeed;
+          });
+          lastScoreRef.current = newScore;
+        }
+        
         setFood(generateRandomPosition(GRID_SIZE, newSnake));
       } else {
         newSnake.pop();
@@ -50,7 +78,7 @@ const Game = () => {
 
       return newSnake;
     });
-  }, [direction, food, gameOver, isPaused]);
+  }, [direction, food, gameOver, isPaused, score]);
 
   const getNewHead = (head, dir) => {
     switch (dir) {
@@ -70,31 +98,36 @@ const Game = () => {
   const handleKeydown = useCallback((e) => {
     e.preventDefault();
     
-    // Debounce key presses to prevent too rapid direction changes
-    const now = Date.now();
-    if (handleKeydown.lastKeyTime && now - handleKeydown.lastKeyTime < 50) {
+    // Only process arrow keys
+    if (!['ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight'].includes(e.key)) {
+      if (e.key === ' ') {
+        setIsPaused(prev => !prev);
+      }
       return;
     }
-    handleKeydown.lastKeyTime = now;
-    
+
+    // Determine the new direction based on the key press
+    let newDirection;
     switch (e.key) {
       case 'ArrowUp':
-        if (direction !== 'DOWN') setDirection('UP');
+        if (direction !== 'DOWN') newDirection = 'UP';
         break;
       case 'ArrowDown':
-        if (direction !== 'UP') setDirection('DOWN');
+        if (direction !== 'UP') newDirection = 'DOWN';
         break;
       case 'ArrowLeft':
-        if (direction !== 'RIGHT') setDirection('LEFT');
+        if (direction !== 'RIGHT') newDirection = 'LEFT';
         break;
       case 'ArrowRight':
-        if (direction !== 'LEFT') setDirection('RIGHT');
-        break;
-      case ' ':
-        setIsPaused(prev => !prev);
+        if (direction !== 'LEFT') newDirection = 'RIGHT';
         break;
       default:
-        break;
+        return;
+    }
+
+    // If we have a valid new direction, store it in the buffer
+    if (newDirection) {
+      directionBuffer.current = newDirection;
     }
   }, [direction]);
 
@@ -105,7 +138,7 @@ const Game = () => {
     };
   }, [handleKeydown]);
 
-  useInterval(moveSnake, gameOver ? null : GAME_SPEED);
+  useInterval(moveSnake, gameOver ? null : gameSpeed);
 
   const resetGame = () => {
     // First set game over to false and pause the game
@@ -117,6 +150,11 @@ const Game = () => {
     setDirection(INITIAL_DIRECTION);
     setFood(generateRandomPosition(GRID_SIZE, INITIAL_SNAKE));
     setScore(0);
+    setGameSpeed(INITIAL_GAME_SPEED);
+    
+    // Reset the refs
+    directionBuffer.current = null;
+    lastScoreRef.current = 0;
     
     // Start the game after a small delay to ensure all state is updated
     setTimeout(() => {
@@ -135,6 +173,7 @@ const Game = () => {
       {gameOver && <GameOver score={score} onRestart={resetGame} />}
       <div className="instructions">
         <p>Use arrow keys to move. Space to pause.</p>
+        <p>Game speeds up every {SCORE_THRESHOLD} points!</p>
       </div>
     </div>
   );
