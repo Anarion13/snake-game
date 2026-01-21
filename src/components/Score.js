@@ -1,7 +1,9 @@
 import React from 'react';
 
-const Score = ({ score }) => {
-  const style = {
+const Score = ({ score, score2 }) => {
+  const containerStyle = {
+    display: 'flex',
+    justifyContent: 'space-around',
     textAlign: 'center',
     fontSize: '24px',
     fontWeight: 'bold',
@@ -10,9 +12,18 @@ const Score = ({ score }) => {
     fontFamily: 'Courier New, monospace'
   };
 
+  const playerStyle = {
+    flex: 1
+  };
+
   return (
-    <div data-testid="score" style={style}>
-      Score: {score}
+    <div data-testid="score" style={containerStyle}>
+      <div style={playerStyle}>
+        Player 1 (Black): {score}
+      </div>
+      <div style={playerStyle}>
+        Player 2 (Blue): {score2}
+      </div>
     </div>
   );
 };

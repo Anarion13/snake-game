@@ -2,7 +2,7 @@ import React from 'react';
 import Snake from './Snake';
 import Food from './Food';
 
-const Board = ({ snakeBody, foodPosition, gridSize }) => {
+const Board = ({ snakeBody, snake2Body, foodPosition, gridSize }) => {
   const style = {
     width: `${gridSize * 20}px`,
     height: `${gridSize * 20}px`,
@@ -15,7 +15,8 @@ const Board = ({ snakeBody, foodPosition, gridSize }) => {
 
   return (
     <div data-testid="game-board" style={style}>
-      <Snake segments={snakeBody} />
+      <Snake segments={snakeBody} color="#000000" />
+      <Snake segments={snake2Body} color="#0066CC" />
       <Food position={foodPosition} />
     </div>
   );

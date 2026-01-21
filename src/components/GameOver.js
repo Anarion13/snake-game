@@ -1,6 +1,6 @@
 import React from 'react';
 
-const GameOver = ({ score, onRestart }) => {
+const GameOver = ({ score, score2, winner, onRestart }) => {
   const style = {
     position: 'absolute',
     top: '50%',
@@ -30,8 +30,10 @@ const GameOver = ({ score, onRestart }) => {
   return (
     <div data-testid="game-over" style={style}>
       <h2>GAME OVER</h2>
-      <p>YOUR SCORE: {score}</p>
-      <button 
+      {winner && <p style={{ fontSize: '20px', fontWeight: 'bold' }}>{winner} WINS!</p>}
+      <p>Player 1 Score: {score}</p>
+      <p>Player 2 Score: {score2}</p>
+      <button
         onClick={onRestart}
         style={buttonStyle}
       >
