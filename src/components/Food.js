@@ -5,7 +5,7 @@ const Food = ({ position }) => {
     position: 'absolute',
     width: '20px',
     height: '20px',
-    backgroundColor: '#000000',
+    backgroundColor: '#b5179e',
     left: `${position[0] * 20}px`,
     top: `${position[1] * 20}px`,
   };

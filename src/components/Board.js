@@ -8,15 +8,15 @@ const Board = ({ snakeBody, snake2Body, foodPosition, gridSize }) => {
     height: `${gridSize * 20}px`,
     position: 'relative',
     margin: '0 auto',
-    backgroundColor: '#9EB764',
-    border: '4px solid #000000',
-    boxShadow: 'inset 0 0 0 2px #000000'
+    backgroundColor: '#2f0f48',
+    border: '4px solid #4b1b6b',
+    boxShadow: 'inset 0 0 0 2px #8f4fd6'
   };
 
   return (
     <div data-testid="game-board" style={style}>
-      <Snake segments={snakeBody} color="#000000" />
-      <Snake segments={snake2Body} color="#0066CC" />
+      <Snake segments={snakeBody} color="#d3a6ff" />
+      <Snake segments={snake2Body} color="#6a1bb8" />
       <Food position={foodPosition} />
     </div>
   );

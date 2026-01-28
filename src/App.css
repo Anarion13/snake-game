@@ -5,16 +5,16 @@
   align-items: center;
   justify-content: center;
   height: 100vh;
-  background-color: #9EB764;
+  background-color: #e9ddff;
   font-family: 'Courier New', monospace;
 }
 
 .game-container {
   margin: 0 auto;
   position: relative;
-  border: 4px solid #000000;
+  border: 4px solid #4b1b6b;
   padding: 20px;
-  background-color: #9EB764;
+  background-color: #2f0f48;
 }
 
 .pause-overlay {
@@ -22,25 +22,25 @@
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  background-color: #000000;
-  color: #9EB764;
+  background-color: #2b0a3d;
+  color: #e9ddff;
   padding: 20px;
   font-size: 24px;
   font-weight: bold;
   z-index: 10;
   font-family: 'Courier New', monospace;
-  border: 2px solid #9EB764;
+  border: 2px solid #8f4fd6;
 }
 
 .instructions {
   margin-top: 20px;
   font-size: 16px;
-  color: #000000;
+  color: #2b0a3d;
   font-family: 'Courier New', monospace;
 }
 
 h1 {
-  color: #000000;
+  color: #2b0a3d;
   margin-bottom: 10px;
   font-size: 32px;
   font-family: 'Courier New', monospace;

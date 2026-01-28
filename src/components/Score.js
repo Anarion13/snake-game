@@ -8,7 +8,7 @@ const Score = ({ score, score2 }) => {
     fontSize: '24px',
     fontWeight: 'bold',
     margin: '10px 0',
-    color: '#000000',
+    color: '#2b0a3d',
     fontFamily: 'Courier New, monospace'
   };
 
@@ -19,10 +19,10 @@ const Score = ({ score, score2 }) => {
   return (
     <div data-testid="score" style={containerStyle}>
       <div style={playerStyle}>
-        Player 1 (Black): {score}
+        Player 1 (Lilac): {score}
       </div>
       <div style={playerStyle}>
-        Player 2 (Blue): {score2}
+        Player 2 (Amethyst): {score2}
       </div>
     </div>
   );
