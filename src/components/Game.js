@@ -5,8 +5,8 @@ import GameOver from './GameOver';
 import useInterval from '../hooks/useInterval';
 import { generateRandomPosition, checkCollision, checkSelfCollision, checkSnakeCollision } from '../utils/gameUtils';
 
-const INITIAL_SNAKE = [[4, 10], [3, 10], [2, 10], [1, 10], [0, 10]];
-const INITIAL_SNAKE_2 = [[15, 10], [16, 10], [17, 10]];
+const INITIAL_SNAKE = [[9, 10], [8, 10], [7, 10], [6, 10], [5, 10], [4, 10], [3, 10], [2, 10], [1, 10], [0, 10]];
+const INITIAL_SNAKE_2 = [[14, 10], [15, 10], [16, 10], [17, 10], [18, 10], [19, 10]];
 const INITIAL_DIRECTION = 'RIGHT';
 const INITIAL_DIRECTION_2 = 'LEFT';
 const GRID_SIZE = 20;
