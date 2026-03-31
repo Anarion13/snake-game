@@ -6,11 +6,15 @@ describe('Game Component', () => {
     render(<Game />);
     
     expect(screen.getByText(/Snake Game/i)).toBeInTheDocument();
-    expect(screen.getByTestId('score')).toHaveTextContent('Score: 0');
+    expect(screen.getByTestId('score')).toHaveTextContent('Player 1 (Lilac): 0');
+    expect(screen.getByTestId('score')).toHaveTextContent('Player 2 (Amethyst): 0');
     expect(screen.getByTestId('game-board')).toBeInTheDocument();
-    expect(screen.getByTestId('snake')).toBeInTheDocument();
+    const snakes = screen.getAllByTestId('snake');
+    expect(snakes).toHaveLength(2);
+    expect(snakes[0].childElementCount).toBe(10);
+    expect(snakes[1].childElementCount).toBe(6);
     expect(screen.getByTestId('food')).toBeInTheDocument();
-    expect(screen.getByText(/Use arrow keys to move/i)).toBeInTheDocument();
+    expect(screen.getByText(/Player 1: Arrow keys \| Player 2: WASD keys \| Space to pause/i)).toBeInTheDocument();
   });
 
   test('displays pause overlay when space is pressed', () => {
